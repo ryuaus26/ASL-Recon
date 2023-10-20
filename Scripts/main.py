@@ -3,8 +3,8 @@ import os
 
 
 
-train_path = os.path.join("Data","asl_alphabet_test")
-test_path = os.path.join("Data","asl_alphabet_test")
+train_path = os.path.join("Data","asl_alphabet_test/asl_alphabet_train")
+test_path = os.path.join("Data","asl_alphabet_test/asl_alphabet_test")
 
 #define tuning model
 
@@ -13,8 +13,6 @@ test_path = os.path.join("Data","asl_alphabet_test")
 EPOCHS = 100
 IMG_SIZE = (200,200)
 LR = 0.01
-
-print((200,200) + (3,))
 
 VGG16 = keras.applications.VGG16(include_top=False,input_shape=(IMG_SIZE + (3,)),classes=29)
 
@@ -27,7 +25,8 @@ train_generator  = keras.preprocessing.image.ImageDataGenerator(
 
 train_data_gen = train_generator.flow_from_directory(
     directory=train_path,
-    target_size=IMG_SIZE
+    target_size=IMG_SIZE,
+    class_mode=""
 )
 
 
