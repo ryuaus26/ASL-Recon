@@ -1,5 +1,6 @@
 Model Archietecture FineTuned VGG16
-![Uploading download.jpeg…]()
+
+![download](https://github.com/ryuaus26/ASL-Recon/assets/88960218/a2d9cff9-86c3-4f68-93f4-eb1ca00c806e)
 
 
 Set up:
