@@ -1,3 +1,7 @@
+Model Archietecture FineTuned VGG16
+![Uploading download.jpeg…]()
+
+
 Set up:
 
 1. Download ASL dataset: https://www.kaggle.com/datasets/grassknoted/asl-alphabet
