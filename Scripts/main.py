@@ -3,11 +3,34 @@ import os
 import tensorflow as tf
 from keras.layers import Conv2D,Dropout,MaxPooling2D,Dense,Flatten
 from keras import Sequential
+import matplotlib.pyplot as plt
+from keras.preprocessing import image
 
 train_path = os.path.join("Data","asl_alphabet_train/asl_alphabet_train")
 
 
-#define tuning model
+class_names = sorted(os.listdir(train_path))
+
+# Create a grid to display the images
+rows, cols = 5, 6  # Adjust the number of rows and columns as needed
+fig, axes = plt.subplots(rows, cols, figsize=(12, 10))
+
+for i, class_name in enumerate(class_names):
+    # Find an image from each class folder
+    class_path = os.path.join(train_path, class_name)
+    image_files = os.listdir(class_path)
+    image_file = os.path.join(class_path, image_files[0])
+
+    # Load and display the image
+    img = image.load_img(image_file, target_size=(200, 200))
+    ax = axes[i // cols, i % cols]
+    ax.imshow(img)
+    ax.set_title(class_name)
+    ax.axis('off')
+
+plt.tight_layout()
+plt.show()
+
 
 
 #Define hyperparameters
