@@ -57,7 +57,7 @@ train = keras.utils.image_dataset_from_directory(
 
 valid = keras.utils.image_dataset_from_directory(
     train_path,
-    label_mode='int'
+    label_mode='int',
     batch_size=BATCH_SIZE,
     image_size=IMG_SIZE,
     validation_split=0.2,
@@ -68,7 +68,10 @@ valid = keras.utils.image_dataset_from_directory(
 def process(image,label):
     image = tf.cast(image/255. ,tf.float32)
     return image,label
+
 train = train.map(process)
+
+valid = valid.map(process)
 
 
 model = Sequential()
