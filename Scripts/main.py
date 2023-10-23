@@ -99,6 +99,21 @@ model.add(Dense(29, activation='softmax'))
 model.summary()
 
 
+checkpoint_callback = keras.callbacks.ModelCheckpoint(
+    "model_weights.h5",
+    monitor="val_loss",
+    save_best_only=True,
+    save_weights_only=True,
+    mode="min",
+    verbose=1
+)
+
+early_stopping_callback =keras.callbacks.EarlyStopping(
+    monitor='val_loss',  # Monitor validation loss
+    patience=10,  # Stop if there's no improvement for 10 epochs
+    verbose=1,  # Print messages about early stopping
+    restore_best_weights=True  # Restore model weights to the best epoch
+)
 
 model.compile(optimizer='adam', 
             loss = tf.keras.losses.SparseCategoricalCrossentropy(), 
@@ -106,6 +121,7 @@ model.compile(optimizer='adam',
 
 history = model.fit(train,
                     epochs=EPOCHS,batch_size=BATCH_SIZE,
-                    validation_data=valid)
+                    validation_data=valid,
+                    callbacks=[checkpoint_callback,early_stopping_callback])
 
 model.save("asl_model.h5")
