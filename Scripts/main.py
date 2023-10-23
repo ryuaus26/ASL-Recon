@@ -35,7 +35,7 @@ for i, class_name in enumerate(class_names):
 
 #Define hyperparameters
 EPOCHS = 100
-IMG_SIZE = (200,200)
+IMG_SIZE = (128,128)
 LR = 0.01
 BATCH_SIZE = 32
 
@@ -78,31 +78,17 @@ model = Sequential()
 # input layer
 # Block 1
 model.add(Conv2D(32,3,activation='relu',padding='same',input_shape = IMG_SIZE + (3,)))
-model.add(Conv2D(32,3,activation='relu',padding='same'))
+model.add(Conv2D(32,3,activation='relu',padding='valid'))
 #model.add(BatchNormalization())
-model.add(MaxPooling2D(padding='same'))
+model.add(MaxPooling2D((8,8),padding='valid'))
 model.add(Dropout(0.2))
-
-# Block 2
-model.add(Conv2D(64,3,activation='relu',padding='same'))
-model.add(Conv2D(64,3,activation='relu',padding='same'))
-#model.add(BatchNormalization())
-model.add(MaxPooling2D(padding='same'))
-model.add(Dropout(0.3))
-
-#Block 3
-model.add(Conv2D(128,3,activation='relu',padding='same'))
-model.add(Conv2D(128,3,activation='relu',padding='same'))
-#model.add(BatchNormalization())
-model.add(MaxPooling2D(padding='same'))
-model.add(Dropout(0.4))
 
 # fully connected layer
 model.add(Flatten())
 
-model.add(Dense(512,activation='relu'))
-model.add(Dropout(0.2))
 model.add(Dense(128,activation='relu'))
+model.add(Dropout(0.2))
+model.add(Dense(64,activation='relu'))
 model.add(Dropout(0.3))
 
 # output layer
