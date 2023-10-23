@@ -28,8 +28,8 @@ for i, class_name in enumerate(class_names):
     ax.set_title(class_name)
     ax.axis('off')
 
-plt.tight_layout()
-plt.show()
+# plt.tight_layout()
+# plt.show()
 
 
 
@@ -43,18 +43,32 @@ BATCH_SIZE = 32
 #Define translation corresponding to each ASL letter
 
 
-train_generator  = keras.preprocessing.image.ImageDataGenerator(
-    rescale=1./255,
-    validation_split=0.2
+
+
+train = keras.utils.image_dataset_from_directory(
+    train_path,
+    batch_size=BATCH_SIZE,
+    label_mode='int',
+    image_size=IMG_SIZE,
+    validation_split=0.2,
+    subset="training",
+    seed= 1
 )
 
-train_data_gen = train_generator.flow_from_directory(
-    directory=train_path,
-    target_size=IMG_SIZE,
-    class_mode="categorical",
+valid = keras.utils.image_dataset_from_directory(
+    train_path,
+    label_mode='int'
     batch_size=BATCH_SIZE,
-    
+    image_size=IMG_SIZE,
+    validation_split=0.2,
+    subset="validation",
+    seed = 1
 )
+
+def process(image,label):
+    image = tf.cast(image/255. ,tf.float32)
+    return image,label
+train = train.map(process)
 
 
 model = Sequential()
@@ -98,10 +112,11 @@ model.summary()
 
 
 model.compile(optimizer='adam', 
-              loss='categorical_crossentropy', 
+            loss = tf.keras.losses.SparseCategoricalCrossentropy(), 
               metrics=['accuracy'])
 
-history = model.fit(train_data_gen,
-                    epochs=EPOCHS,batch_size=BATCH_SIZE)
+history = model.fit(train,
+                    epochs=EPOCHS,batch_size=BATCH_SIZE,
+                    validation_data=valid)
 
 model.save("asl_model.h5")
