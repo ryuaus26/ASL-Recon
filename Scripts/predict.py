@@ -4,7 +4,7 @@ from keras.preprocessing import image
 from keras.models import load_model
 import numpy as np
 import matplotlib.pyplot as plt
-
+import random
 
 train_path = os.path.join("Data","asl_alphabet_train/asl_alphabet_train")
 
@@ -15,21 +15,21 @@ class_names = sorted(os.listdir(train_path))
 rows, cols = 5, 6  # Adjust the number of rows and columns as needed
 fig, axes = plt.subplots(rows, cols, figsize=(12, 10))
 
-for i, class_name in enumerate(class_names):
-    # Find an image from each class folder
-    class_path = os.path.join(train_path, class_name)
-    image_files = os.listdir(class_path)
-    image_file = os.path.join(class_path, image_files[0])
+# for i, class_name in enumerate(class_names):
+#     # Find an image from each class folder
+#     class_path = os.path.join(train_path, class_name)
+#     image_files = os.listdir(class_path)
+#     image_file = os.path.join(class_path, image_files[0])
 
-    # Load and display the image
-    img = image.load_img(image_file, target_size=(200, 200))
-    ax = axes[i // cols, i % cols]
-    ax.imshow(img)
-    ax.set_title(class_name)
-    ax.axis('off')
+#     # Load and display the image
+#     img = image.load_img(image_file, target_size=(200, 200))
+#     ax = axes[i // cols, i % cols]
+#     ax.imshow(img)
+#     ax.set_title(class_name)
+#     ax.axis('off')
 
-plt.tight_layout()
-plt.show()
+# plt.tight_layout()
+# plt.show()
 
 # Load your trained model
 model = load_model("model_weights.h5")
@@ -91,31 +91,47 @@ def translate_prediction(prediction):
         return 'Z'
 
 # Directory containing ASL images
-image_path = '/Users/ryuaus26/Desktop/Python/ASL-Recon/Test'
+image_path = '/Users/ryuaus26/Desktop/Python/ASL-Recon/Data/asl_alphabet_train/asl_alphabet_train'
 
 sentence = []
 
-# Iterate through the images in the directory
-word = ["A", "a","w","y","z"]
+#Word to translate
+word = "Austin"
+word = word.upper()
+#Accept input of multiple images
 for i,filename in enumerate(sorted(os.listdir(image_path))):
-    if filename.startswith(word[i]):
+    
+        #Stop code once reached length of the word
+        if i == len(word):
+            break
+        
         image_file = os.path.join(image_path, filename)
+        #Keep track of letters
+        letter = word[i]
+        letter_file = os.path.join(image_path,letter)
         
-        # Load and preprocess the image
-        img = image.load_img(image_file, target_size=(128, 128))
-        img_array = image.img_to_array(img)
-        img_array = np.expand_dims(img_array, axis=0)
-        img_array = img_array / 255.0  # Normalize the image data
+        #Choose random image
+        random_file = random.choice(os.listdir(letter_file))
+        print(word[i])
+        if (random_file.startswith(word[i])):
+            
+            # Load and preprocess the image
+            img = image.load_img(os.path.join(image_path + '/' +  letter,random_file), target_size=(128, 128))
+            img_array = image.img_to_array(img)
+            img_array = np.expand_dims(img_array, axis=0)
+            img_array = img_array / 255.0  # Normalize the image data
         
-        # Make the prediction
-        prediction = model.predict(img_array)
-        predicted_letter = translate_prediction(prediction)
+            # Make the prediction
+            prediction = model.predict(img_array)
+            predicted_letter = translate_prediction(prediction)
         
-        # Display the image and prediction
-        sentence.append(predicted_letter)
-        plt.imshow(img)
-        plt.title(f"Predicted letter: {predicted_letter}")
-        plt.show()
+            # Display the image and prediction
+            sentence.append(predicted_letter)
+            plt.imshow(img)
+            plt.title(f"Predicted letter: {predicted_letter}")
+            plt.show()
+            i += 1
+        
 
 #print out sentence
 sentence_str = ''.join(sentence)

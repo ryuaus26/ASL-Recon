@@ -15,26 +15,26 @@ class_names = sorted(os.listdir(train_path))
 rows, cols = 5, 6  # Adjust the number of rows and columns as needed
 fig, axes = plt.subplots(rows, cols, figsize=(12, 10))
 
-for i, class_name in enumerate(class_names):
-    # Find an image from each class folder
-    class_path = os.path.join(train_path, class_name)
-    image_files = os.listdir(class_path)
-    image_file = os.path.join(class_path, image_files[0])
+# for i, class_name in enumerate(class_names):
+#     # Find an image from each class folder
+#     class_path = os.path.join(train_path, class_name)
+#     image_files = os.listdir(class_path)
+#     image_file = os.path.join(class_path, image_files[0])
 
-    # Load and display the image
-    img = image.load_img(image_file, target_size=(200, 200))
-    ax = axes[i // cols, i % cols]
-    ax.imshow(img)
-    ax.set_title(class_name)
-    ax.axis('off')
+#     # Load and display the image
+#     img = image.load_img(image_file, target_size=(128, 128))
+#     ax = axes[i // cols, i % cols]
+#     ax.imshow(img)
+#     ax.set_title(class_name)
+#     ax.axis('off')
 
-plt.tight_layout()
-plt.show()
+# plt.tight_layout()
+# plt.show()
 
 
 
 #Define hyperparameters
-EPOCHS = 100
+EPOCHS = 80
 IMG_SIZE = (128,128)
 LR = 0.01
 BATCH_SIZE = 32
