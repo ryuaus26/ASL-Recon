@@ -28,8 +28,8 @@ for i, class_name in enumerate(class_names):
     ax.set_title(class_name)
     ax.axis('off')
 
-# plt.tight_layout()
-# plt.show()
+plt.tight_layout()
+plt.show()
 
 
 
