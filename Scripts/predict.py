@@ -12,8 +12,8 @@ train_path = os.path.join("Data","asl_alphabet_train/asl_alphabet_train")
 class_names = sorted(os.listdir(train_path))
 
 # Create a grid to display the images
-rows, cols = 5, 6  # Adjust the number of rows and columns as needed
-fig, axes = plt.subplots(rows, cols, figsize=(12, 10))
+# rows, cols = 5, 6  # Adjust the number of rows and columns as needed
+# fig, axes = plt.subplots(rows, cols, figsize=(12, 10))
 
 # for i, class_name in enumerate(class_names):
 #     # Find an image from each class folder
@@ -95,9 +95,14 @@ image_path = '/Users/ryuaus26/Desktop/Python/ASL-Recon/Data/asl_alphabet_train/a
 
 sentence = []
 
+
 #Word to translate
-word = "Austin"
+print("Enter any sentence (X DO NOT INCLUDE'?','!','.',',') :")
+word = input()
+
 word = word.upper()
+indexes = []
+space_count = 0
 #Accept input of multiple images
 for i,filename in enumerate(sorted(os.listdir(image_path))):
     
@@ -106,15 +111,24 @@ for i,filename in enumerate(sorted(os.listdir(image_path))):
             break
         
         image_file = os.path.join(image_path, filename)
+        
         #Keep track of letters
         letter = word[i]
+        
+        #When sentence has a space
+        if (letter == " "):
+            letter = "space"
+            indexOfSpace = i
+            space_count += 1
+            indexes.append(indexOfSpace)
+            
         letter_file = os.path.join(image_path,letter)
         
         #Choose random image
         random_file = random.choice(os.listdir(letter_file))
-        print(word[i])
+        
         if (random_file.startswith(word[i])):
-            
+                            
             # Load and preprocess the image
             img = image.load_img(os.path.join(image_path + '/' +  letter,random_file), target_size=(128, 128))
             img_array = image.img_to_array(img)
@@ -135,4 +149,11 @@ for i,filename in enumerate(sorted(os.listdir(image_path))):
 
 #print out sentence
 sentence_str = ''.join(sentence)
-print(f"The sentence is {sentence_str}")
+space_added_str = list(sentence_str)
+
+for space in indexes:
+    space_added_str.insert(space, ' ')
+
+space_added_str = ''.join(space_added_str)
+
+print(f"The sentence is: {space_added_str}")
