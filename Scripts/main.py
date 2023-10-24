@@ -103,7 +103,7 @@ checkpoint_callback = keras.callbacks.ModelCheckpoint(
     "model_weights.h5",
     monitor="val_loss",
     save_best_only=True,
-    save_weights_only=True,
+    save_weights_only=False,
     mode="min",
     verbose=1
 )
